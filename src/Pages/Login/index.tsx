@@ -1,9 +1,12 @@
 import React from "react";
-import Icon from "../../components/Icon";
+import EmailIcon from "../../components/icons/emailIcon";
+import PasswordIcon from "../../components/icons/passwordIcon";
+import ClosePassword from "../../components/icons/closePassword";
 
 const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const emailValidation = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,7 +18,13 @@ const Login: React.FC = () => {
   };
 
   const formValidation = () => {
-    return emailValidation(email) && passwordValidation(password);
+    if (emailValidation(email) && passwordValidation(password)) {
+      localStorage.setItem("email", email);
+      return true;
+    } else {
+      localStorage.removeItem("email");
+      return false;
+    }
   };
 
   return (
@@ -51,21 +60,8 @@ const Login: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              <span className='absolute inset-y-0 end-0 grid place-content-center px-4'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='size-4 text-gray-400'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    d='M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'
-                  />
-                </svg>
+              <span className='absolute inset-y-0 end-0 grid place-content-center px-4 opacity-45 bg-none'>
+                <EmailIcon />
               </span>
             </div>
           </div>
@@ -77,16 +73,20 @@ const Login: React.FC = () => {
 
             <div className='relative'>
               <input
-                type='password'
-                className='w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm outline-none'
+                type={showPassword ? "text" : "password"}
+                className='w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm outline-none bg-none'
                 placeholder='Enter password'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              <span className='absolute inset-y-0 end-0 grid place-content-center px-4'>
-                <Icon />
-              </span>
+              <button
+                type='button'
+                className='absolute inset-y-0 end-0 grid place-content-center px-4 opacity-45'
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <PasswordIcon /> : <ClosePassword />}
+              </button>
             </div>
           </div>
 

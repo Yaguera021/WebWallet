@@ -1,9 +1,10 @@
 import React from "react";
+import Header from "../../components/Header";
 
 const Wallet: React.FC = () => {
   return (
     <div>
-      <div>HEADER</div>
+      <Header />
       <div>FORM</div>
     </div>
   );
